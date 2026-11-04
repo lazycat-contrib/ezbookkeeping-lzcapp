@@ -10,6 +10,7 @@ application:
       backend: http://ezbookkeeping:8080/
 services:
   ezbookkeeping:
+    # upstream: mayswind/ezbookkeeping:2.1.1
     image: docker.1ms.run/mayswind/ezbookkeeping:2.1.1
     environment:
       # Signing key for tokens. The upstream default is the literal string
