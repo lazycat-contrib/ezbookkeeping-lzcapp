@@ -1,0 +1,38 @@
+application:
+  subdomain: ezbookkeeping
+  multi_instance: false
+  # ezBookkeeping has its own login page and user accounts (username + password
+  # registration), so it authenticates itself instead of relying on the platform.
+  public_path:
+    - /
+  upstreams:
+    - location: /
+      backend: http://ezbookkeeping:8080/
+services:
+  ezbookkeeping:
+    image: docker.1ms.run/mayswind/ezbookkeeping:2.1.1
+    environment:
+      # Signing key for tokens. The upstream default is the literal string
+      # "ezbookkeeping" and the sample config says it must be changed before
+      # first run, so pin it to a per-instance random value.
+      - EBK_SECURITY_SECRET_KEY={{ printf "%x" (stable_secret "secret_key") }}
+      # Serve relative URLs so picture and QR-code links work behind the
+      # platform ingress (the default root_url hardcodes http://localhost:8080).
+      - EBK_SERVER_ROOT_URL=/
+    binds:
+      - /lzcapp/var/data:/ezbookkeeping/data
+      - /lzcapp/var/storage:/ezbookkeeping/storage
+      - /lzcapp/var/log:/ezbookkeeping/log
+usage: |
+  ezBookkeeping 是自托管的个人记账应用：多账户、多币种、收支分类与标签、
+  预算与统计图表，支持多用户，每人维护自己的独立账本。
+
+  首次打开会进入登录页，点击「注册」用用户名 + 密码创建账号即可开始使用，
+  不需要邮箱验证。注册功能默认开启，没有内置口令。
+
+  说明：
+    - 应用自带账号体系，直接对外开放由 ezBookkeeping 自己的登录页鉴权，所以使用 public_path。
+    - 数据默认存在 SQLite 数据库（data 目录），随应用持久化保留；交易图片存在 storage 目录。
+    - 默认货币、语言、每周起始日可在注册时或之后在设置里修改。
+    - 汇率更新与可选的 AI 票据识别需要访问外网，不联网不影响基础记账。
+    - 未做实机验证。

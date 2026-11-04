@@ -1,0 +1,17 @@
+package: community.lazycat.app.ezbookkeeping
+name: ezBookkeeping
+description: "Self-hosted personal finance bookkeeping with multi-account, multi-currency, tags and charts."
+version: 2.1.1
+min_os_version: "1.5.0"
+homepage: https://ezbookkeeping.mayswind.net
+author: MaysWind
+license: MIT
+permissions:
+  required: []
+locales:
+  zh:
+    name: ezBookkeeping
+    description: "自托管记账应用：多账户、多币种、标签与分类、报表图表，支持多用户各自独立账本。"
+  en:
+    name: ezBookkeeping
+    description: "Self-hosted personal finance bookkeeping with multi-account, multi-currency, tags and charts."
